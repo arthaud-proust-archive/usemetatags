@@ -3,12 +3,11 @@ import { useState } from 'react';
 import styled from 'styled-components';
 import TabbedForm from '../components/TabbedForm';
 
-import Highlight from 'react-highlight';
-import { CodeBlock, dracula } from "react-code-blocks";
+import { CodeBlock, anOldHope } from "react-code-blocks";
+
 
 import getGeneratedHtml from '../services/utils/htmlMeta';
 import appFormTabs from '../services/formsTabs/app';
-import '../assets/dark.css';
 
 const StyledMain = styled.main`
     display: flex;
@@ -29,20 +28,27 @@ const MainContent = styled.div`
 
 const RightPanelContainer = styled.div`
     // width: var(--rightPanelWComputed);
+    position: relative;
     width: 50%;
     height: 100vh;
-    overflow-x: auto;
+    // overflow-x: auto;
     font-size: 1rem;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
     user-select: normal;
-    > pre {
-        margin: 0 !important;
+    > span {
+        padding-left: 1.4rem;
         > code {
-            padding-top: 2rem;
-            padding-left: 1.4rem;
-            padding-bottom: 2rem;
+            padding-top: 2rem !important;
+            > :last-child {
+                padding-bottom: 2rem !important;
+            }
+
+            &:first-child {
+                text-align: right;
+                opacity: 0.5;
+            }
         }
     }
 `
@@ -56,7 +62,6 @@ export default function InApp() {
     const [generatedHtml, setGeneratedHtml] = useState(getGeneratedHtml({}));
 
 
-    console.log(generatedHtml);
     return (
         <StyledMain>
             <MainContent>
@@ -64,19 +69,18 @@ export default function InApp() {
                 <TabbedForm 
                     tabs={appFormTabs}
                     onChange={formData=>setGeneratedHtml(getGeneratedHtml(formData))}
+                    formResult={generatedHtml}   
                 />
             </MainContent>
             <RightPanelContainer>
-                {/* <Highlight className='html'>
-                    {generatedHtml}
-                </Highlight> */}
                 <CodeBlock
                     text={generatedHtml}
                     language="html"
                     showLineNumbers={true}
                     startingLineNumber={0}
-                    theme={dracula}
+                    theme={anOldHope}
                 />
+                <div className="bottom-spacer"></div>
             </RightPanelContainer>
         </StyledMain>
     )

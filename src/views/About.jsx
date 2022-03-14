@@ -1,7 +1,7 @@
 import Header from '../components/Header'
 import styled from 'styled-components';
-import { shuffleArray } from '../services/utils/array';
 import BtnLink from '../components/BtnLink';
+import RandomWords from '../components/RandomWords';
 
 const StyledMain = styled.main`
     display: flex;
@@ -33,12 +33,16 @@ const StyledP = styled.p `
 `
 
 
-
+const Scrollable = styled.div`
+    overflow: visible auto;
+    width: 100%;
+    height: 100%;
+`
 
 const MainContent = styled.div`
     width: var(--leftPanelWComputed);
-    margin-left: auto;
     display: flex;
+    margin-left: auto;
     flex-direction: column;
     align-items:flex-start;
     max-height: 100vh;
@@ -55,47 +59,30 @@ const LettersContainer = styled.div`
     user-select: none;
 `
 
-var words = [
-    'title', 'charset', 'og', 
-    'image', 'canonical', 'url', 
-    'target', 'subject', 'description', 
-    'theme-color', 'type', 'card', 
-    'seo', 'img', 'twitter',
-    'link', 'rel', 'href', 'http-equiv', 
-    'lang', 'author', 'viewport', 
-    'locale', 'shortcut icon',
-    'creator', 'itemprop'
-];
-
-
 export default function Home() {
-
-    shuffleArray(words);
-
-    const nbLines = 6;
-    const lines = [];
-    for(let i=0; i<nbLines; i++) {
-        lines[i] = [];
-    }
-    
-    for(let i=0; i<words.length; i++) {
-        lines[i%nbLines].push(
-            words[i]
-        );
-    }
-
     return (
         <StyledMain>
             <MainContent>
                 <Header />
-                <StyledH1>À <span>propos</span></StyledH1>
-                <StyledH2>Créez simplement vos balises Meta</StyledH2>
-                <StyledP>qsdqsd</StyledP>
+                <Scrollable>
+                    <StyledH1>À <span>propos</span></StyledH1>
+                    <StyledH2>Les meta-tags</StyledH2>
+                    <StyledP>Ce sont des <b>balises html</b> contenant des informations à destination des navigateurs et des robots d'indexation.</StyledP>
+                    <StyledH2>À qui s'adresse le site?</StyledH2>
+                    <StyledP>Cet outils est destiné aux développeurs qui souhaitent générer des meta-tags rapidement ou simplement obtenir un modèle.</StyledP>
+                    <StyledH2>Pourquoi avoir créé cet outil?</StyledH2>
+                    <StyledP>
+                        <ul>
+                            <li>Progresser en React</li>
+                            <li>Travailler l'accessibilité</li>
+                            <li>Permettre d'avoir une base concrète pour les meta-tags plutôt que de fouiller mes anciens projets pour copier coller.</li>
+                        </ul>
+                    </StyledP>
+                    <StyledP>Développé par <a className='link' href="https://arthaudproust.fr">Arthaud Proust</a></StyledP>
+                </Scrollable>
             </MainContent>
             <LettersContainer>
-                {
-                    lines.map((line,i)=><span key={i}>{line.join(' ')}</span>)
-                }
+                <RandomWords/>
             </LettersContainer>
         </StyledMain>
     )

@@ -1,7 +1,11 @@
-import Header from '../components/Header'
 import styled from 'styled-components';
-import { shuffleArray } from '../services/utils/array';
+import Header from '../components/Header'
 import BtnLink from '../components/BtnLink';
+import RandomWords from '../components/RandomWords';
+
+import useMetaProfile from '../hooks/useMetaProfile';
+import { useEffect } from 'react';
+
 
 const StyledMain = styled.main`
     display: flex;
@@ -33,7 +37,14 @@ const StyledP = styled.p `
 `
 
 
-
+const Scrollable = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    overflow: visible auto;
+    width: 100%;
+    height: 100%;
+`
 
 const MainContent = styled.div`
     width: var(--leftPanelWComputed);
@@ -42,6 +53,12 @@ const MainContent = styled.div`
     flex-direction: column;
     align-items:flex-start;
     max-height: 100vh;
+`
+
+const SavedProfiles = styled.div`
+    display: flex;
+    flex-flow: row wrap;
+    padding-bottom: 1rem;
 `
 
 const LettersContainer = styled.div`
@@ -55,48 +72,29 @@ const LettersContainer = styled.div`
     user-select: none;
 `
 
-var words = [
-    'title', 'charset', 'og', 
-    'image', 'canonical', 'url', 
-    'target', 'subject', 'description', 
-    'theme-color', 'type', 'card', 
-    'seo', 'img', 'twitter',
-    'link', 'rel', 'href', 'http-equiv', 
-    'lang', 'author', 'viewport', 
-    'locale', 'shortcut icon',
-    'creator', 'itemprop'
-];
-
-
 export default function Home() {
+    const {getProfiles, saveProfile} = useMetaProfile();
 
-    shuffleArray(words);
-
-    const nbLines = 6;
-    const lines = [];
-    for(let i=0; i<nbLines; i++) {
-        lines[i] = [];
-    }
+    useEffect(()=>{
+        saveProfile({
+            id: 'test',
+            data: {}
+        })
+    }, []);
     
-    for(let i=0; i<words.length; i++) {
-        lines[i%nbLines].push(
-            words[i]
-        );
-    }
-
     return (
         <StyledMain>
             <MainContent>
                 <Header />
-                <StyledH1>Use <span>metatags</span></StyledH1>
-                <StyledH2>Créez simplement vos balises Meta</StyledH2>
-                <StyledP>Entrez les informations de votre site et récupérez le code html</StyledP>
-                <BtnLink to="/app" content="Commencer" />
+                <Scrollable>
+                    <StyledH1>Use <span>metatags</span></StyledH1>
+                    <StyledH2>Créez simplement vos balises Meta</StyledH2>
+                    <StyledP>Entrez les informations de votre site et récupérez le code html</StyledP>
+                    <BtnLink to="/app" content="Commencer" />
+                </Scrollable>
             </MainContent>
             <LettersContainer>
-                {
-                    lines.map((line,i)=><span key={i}>{line.join(' ')}</span>)
-                }
+                <RandomWords/>
             </LettersContainer>
         </StyledMain>
     )

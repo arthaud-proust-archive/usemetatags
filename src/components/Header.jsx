@@ -9,6 +9,7 @@ const StyledNav = styled.nav`
     align-items: center;
     justify-content: flex-start;
     gap: 2rem;
+    padding: 2rem 0;
 `
 
 const StyledActivableLink = styled(ActivableLink)`
@@ -16,7 +17,8 @@ const StyledActivableLink = styled(ActivableLink)`
     font-family: 'Fredericka the Great', cursive;
     color: var(--p1);
     &:hover {
-        text-decoration: underline var(--p1) 3px !important;
+        text-decoration: underline solid var(--linkBorderHeight) var(--a1) !important;
+        // text-decoration: underline var(--p1) 3px !important;
     }
 `
 

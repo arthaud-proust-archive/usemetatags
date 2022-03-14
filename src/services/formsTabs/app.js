@@ -64,5 +64,20 @@ export default [
             },
 
         ]
-    }
+    },
+    // {
+    //     title: 'Enregistrer le profil',
+    //     shortTitle: 'Sauvegarder',
+    //     name: 'profile',
+    //     fields: [
+    //         {
+    //             name: 'id',
+    //             label: 'Nom'
+    //         },
+    //         {
+    //             name: 'desc',
+    //             label: 'Description'
+    //         },
+    //     ]
+    // }
 ]

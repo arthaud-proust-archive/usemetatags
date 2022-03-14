@@ -18,6 +18,8 @@
     --leftPanelWComputed: calc( var(--containerW) * var(--leftPanelW));
     --rightPanelWComputed: calc( var(--containerW) * var(--rightPanelW) - var(--containerGap) + var(--marginComputed) );
     --marginComputed: calc( (100vw - var(--containerW) ) / 2 );
+
+    --linkBorderHeight: 4px;
 }
 body {
     background: var(--b1);
@@ -27,6 +29,16 @@ body {
     font-family: 'Nunito Sans', sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+}
+
+.link {
+    color: var(--p1);
+    /* font-weight: 600; */
+    text-decoration: underline solid var(--linkBorderHeight) var(--a1);
+}
+
+*:focus {
+    outline: 4px dashed var(--a3);
 }
 
 h1 {

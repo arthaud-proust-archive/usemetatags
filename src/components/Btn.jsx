@@ -6,7 +6,7 @@ const StyledBtn = styled.button`
     cursor: pointer;
     
     border: none;
-    padding: 1rem 3rem;
+    padding: ${props=>props.small?'0.6rem 1rem':'1rem 3rem'};
     text-decoration: none;
     
     font-size: 1.4rem;

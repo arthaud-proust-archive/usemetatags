@@ -1,10 +1,10 @@
 import styled from 'styled-components';
-import ActivableLink from './ActivableLink';
 
 const StyledH3 = styled.h3`
     font-family: 'Fredericka the Great', cursive;
     font-weight: 200;
     font-size: 2rem;
+    margin: 0;
     text-decoration: none;
     color: var(--p1);
 `

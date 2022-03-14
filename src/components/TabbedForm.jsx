@@ -4,13 +4,21 @@ import Input from './Input';
 import Select from './Select';
 import Btn from './Btn';
 import { capitalizeStr } from '../services/utils/string';
+import useCopyBtn from '../hooks/useCopyBtn';
+import useMetaProfile from '../hooks/useMetaProfile';
 
 const FormContainer = styled.div`
     overflow-x:auto;
     display: flex;
     flex-direction: column;
     padding: 2rem 0.2rem;
-    margin-bottom: 1rem;
+`
+
+const FormContent = styled.div`
+    overflow-x:auto;
+    display: flex;
+    flex-direction: column;
+    padding: 2rem 0.2rem;
 `
 
 const TabNav = styled.div`
@@ -28,8 +36,10 @@ const TabNav = styled.div`
 
 `
 
-const TabNavBtn = styled.span`
-    padding: 0.3rem 0.6rem;
+const TabNavBtn = styled.button`
+    padding: 0.4rem 0.8rem;
+    border: none;
+    font-size: 1.4rem;
     cursor: pointer;
     background: ${props=>props.active?'var(--p1)':'none'};
     color: ${props=>props.active?'var(--b1)':'var(--p2)'};
@@ -50,25 +60,39 @@ const TabSubTitle = styled.p `
     color: var(--p2);
 `
 
-const FormContent = styled.div`
+const FormFields = styled.div`
     display: flex;
     flex-direction: column;
     gap: 2rem;
 `
 
-const Actions = styled.div`
+const FormActions = styled.div`
     display: flex;
+    padding-top: 1rem;
+    gap: 1rem;
     flex-flow: row wrap;
     justify-content: flex-end;
 `
 
 
 
-export default function TabbedForm({tabs, onChange}) {
+export default function TabbedForm({tabs, onChange, formResult}) {
     const [currentTabIndex, setCurrentTabIndex] = useState(0);
     const [formData, setFormData] = useState({});
+    const {CopyBtn} = useCopyBtn({
+        contentToCopy: formResult,
+        timeOut: 3000
+    });
+    const {getProfiles, getProfile, saveProfile} = useMetaProfile();
+
+    console.log(getProfiles());
+
 
     useEffect(()=>{
+        saveProfile('test',{
+            e: 'b'
+        });
+
         if(Object.keys(formData).length>0) return;
         let t = {};
         for(let tab of tabs) {
@@ -77,6 +101,9 @@ export default function TabbedForm({tabs, onChange}) {
             }
         }
         setFormData(t);
+
+
+
     }, [])
 
     const currentTab = tabs[currentTabIndex];
@@ -103,43 +130,45 @@ export default function TabbedForm({tabs, onChange}) {
     };
 
     return (
-        <FormContainer>
+        <FormContainer>  
             <TabNav>
                 {
                     tabs
                         .map((tab, i)=>
                             <TabNavBtn key={i} onClick={()=>goToTab(i)} active={tab.title===currentTab.title}>{tab.shortTitle}</TabNavBtn>
                         )
-                        // .reduce((accu, elem)=> {
-                            // return accu === null ? [elem] : [...accu, <span>|</span>, elem]
-                        // }, null)
                 }
             </TabNav>
-            <TabTitle>{currentTab.title}</TabTitle>
-            <TabSubTitle>{currentTab.subtitle}</TabSubTitle>
+            
             <FormContent>
-                {
-                    currentTab.fields.map((field,i)=>{
-                        const {name, ...fieldData} = field;
-                        const fieldName = `${currentTab.name}${capitalizeStr(name)}`;
-                        return fieldData.options?
-                            <Select key={fieldName} name={fieldName} value={formData[fieldName]||''} onChange={handleFieldChange} {...fieldData} />
-                            :
-                            <Input key={fieldName} name={fieldName} value={formData[fieldName]||''} onChange={handleFieldChange} {...fieldData} />
-                    })
-                } 
-
-                <Actions>
-                    { indexInRange(currentTabIndex-1) &&
-                        <Btn action={previousTab} secondary content="Précédent" />
-                    }
-                    { indexInRange(currentTabIndex+1)?
-                        <Btn action={nextTab} content={currentTab.actionTitle||'Continuer'} />
-                        :
-                        <Btn action={submit} content={currentTab.actionTitle||'Finir'} />
-                    }
-                </Actions>       
+                <TabTitle>{currentTab.title}</TabTitle>
+                <TabSubTitle>{currentTab.subtitle}</TabSubTitle>
+                <FormFields>
+                    {
+                        currentTab.fields.map((field,i)=>{
+                            const {name, ...fieldData} = field;
+                            const fieldName = `${currentTab.name}${capitalizeStr(name)}`;
+                            return fieldData.options?
+                                <Select key={fieldName} name={fieldName} value={formData[fieldName]||''} onChange={handleFieldChange} {...fieldData} />
+                                :
+                                <Input key={fieldName} name={fieldName} value={formData[fieldName]||''} onChange={handleFieldChange} {...fieldData} />
+                        })
+                    } 
+                </FormFields>
             </FormContent>
+
+            <FormActions>
+                { indexInRange(currentTabIndex-1) &&
+                    <Btn small action={previousTab} secondary content="Précédent" />
+                }
+                { indexInRange(currentTabIndex+1) &&
+                    <Btn small action={nextTab} secondary content="Suivant" />
+                    // <Btn small action={nextTab} content={currentTab.actionTitle||'Continuer'} />
+                    // <Btn small action={submit} content={currentTab.actionTitle||'Finir'} />
+                }
+                <CopyBtn small content="Copier HTML"/>
+            </FormActions>  
+
         </FormContainer>
     )
 }

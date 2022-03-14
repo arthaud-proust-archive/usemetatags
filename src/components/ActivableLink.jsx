@@ -8,8 +8,9 @@ export default function ActivableLink({children, to, ...props}) {
 
     return (
         <Link
-            style={{ textDecoration: isRoute ? "underline dashed var(--p1) 2px" : "none" }}
+            style={{ textDecoration: isRoute ? "underline solid var(--linkBorderHeight) var(--a1)" : "none" }}
             to={to}
+            tabIndex={ isRoute?'-1':'auto'}
             {...props}
         >
           {children}
