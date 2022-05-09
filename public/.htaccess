@@ -9,3 +9,10 @@
   RewriteRule . /index.html [L]
 
 </IfModule>
+
+<Ifmodule mod_headers.c>
+    <Files "manifest.json">
+        Header set Access-Control-Allow-Origin "*"
+        Header set Access-Control-Allow-Methods: "GET"
+    </Files>
+</IfModule>
